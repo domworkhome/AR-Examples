@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+<html>
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<title>Hello, world!</title>
 	<!-- include three.js library -->
-	<script src='js/three.js'></script>
+	<script src="js/three.js"></script>
+  <!-- include GLTFLoader.js library -->
+  <script src="js/GLTFLoader.js"></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -14,7 +16,7 @@
 	<script src="threex/threex-armarkercontrols.js"></script>
 </head>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+<body style="margin : 0px; overflow: hidden; font-family: Monospace;">
 
 <!-- 
   Example created by Lee Stemkoski: https://github.com/stemkoski
@@ -30,7 +32,7 @@ var arToolkitSource, arToolkitContext;
 var markerRoot1;
 
 var mesh1;
-
+  
 initialize();
 animate();
 
@@ -113,11 +115,20 @@ function initialize()
 		type : 'pattern',
 		patternUrl : "data/hiro.patt",
 	})
+  
+  //the object inside the hole
+  /*var gltfLoader = new THREE.GLTFLoader();
+    gltfLoader.load('models/neko.glb', function (gltf) {
+        let object = gltf.scene;
+        object.position.set(0, -1, 0); // Ajustez selon vos besoins
+        object.scale.set(0.1, 0.1, 0.1); // Ajustez selon vos besoins
+        markerRoot1.add(object); // Ajoutez l'objet au markerRoot1
+    });*/
 
 	// the inside of the hole
-	let geometry1	= new THREE.CylinderGeometry(1,1, 4, 32,1);
+	let geometry1	= new THREE.CylinderGeometry(0.85,0.85, 3, 32,1);
 	let loader = new THREE.TextureLoader();
-	let texture = loader.load( 'images/tiles.jpg', render );
+	let texture = loader.load( 'images/sand.jpg', render );
 	texture.wrapS = THREE.RepeatWrapping;
 	texture.wrapT = THREE.RepeatWrapping;
 	texture.repeat.set(4,2);
