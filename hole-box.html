@@ -1,9 +1,16 @@
-<!DOCTYPE html>
+<html>
 <head>
 	<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 	<title>Hello, world!</title>
 	<!-- include three.js library -->
-	<script src='js/three.js'></script>
+	<script src="js/three.js"></script>
+	    <!-- include GLTFLoader.js library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+      integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -14,7 +21,7 @@
 	<script src="threex/threex-armarkercontrols.js"></script>
 </head>
 
-<body style='margin : 0px; overflow: hidden; font-family: Monospace;'>
+<body style="margin : 0px; overflow: hidden; font-family: Monospace;">
 
 <!-- 
   Example created by Lee Stemkoski: https://github.com/stemkoski
@@ -30,6 +37,8 @@ var arToolkitSource, arToolkitContext;
 var markerRoot1;
 
 var mesh1;
+
+var gltfLoader = new THREE.GLTFLoader();
 
 initialize();
 animate();
@@ -48,11 +57,11 @@ function initialize()
 		antialias : true,
 		alpha: true
 	});
-	renderer.setClearColor(new THREE.Color('lightgrey'), 0)
+	renderer.setClearColor(new THREE.Color("lightgrey"), 0)
 	renderer.setSize( 640, 480 );
-	renderer.domElement.style.position = 'absolute'
-	renderer.domElement.style.top = '0px'
-	renderer.domElement.style.left = '0px'
+	renderer.domElement.style.position = "absolute"
+	renderer.domElement.style.top = "0px"
+	renderer.domElement.style.left = "0px"
 	document.body.appendChild( renderer.domElement );
 
 	clock = new THREE.Clock();
@@ -64,7 +73,7 @@ function initialize()
 	////////////////////////////////////////////////////////////
 
 	arToolkitSource = new THREEx.ArToolkitSource({
-		sourceType : 'webcam',
+		sourceType : "webcam",
 	});
 
 	function onResize()
@@ -82,7 +91,7 @@ function initialize()
 	});
 	
 	// handle resize event
-	window.addEventListener('resize', function(){
+	window.addEventListener("resize", function(){
 		onResize()
 	});
 	
@@ -92,8 +101,8 @@ function initialize()
 
 	// create atToolkitContext
 	arToolkitContext = new THREEx.ArToolkitContext({
-		cameraParametersUrl: 'data/camera_para.dat',
-		detectionMode: 'mono'
+		cameraParametersUrl: "data/camera_para.dat",
+		detectionMode: "mono"
 	});
 	
 	// copy projection matrix to camera when initialization complete
@@ -107,17 +116,17 @@ function initialize()
 
 	// build markerControls
 	markerRoot1 = new THREE.Group();
-	markerRoot1.name = 'marker1';
+	markerRoot1.name = "marker1";
 	scene.add(markerRoot1);
 	let markerControls1 = new THREEx.ArMarkerControls(arToolkitContext, markerRoot1, {
-		type : 'pattern',
+		type : "pattern",
 		patternUrl : "data/hiro.patt",
 	})
 
 	// the inside of the hole
 	let geometry1	= new THREE.CubeGeometry(2,2,2);
 	let loader = new THREE.TextureLoader();
-	let texture = loader.load( 'images/tiles.jpg' );
+	let texture = loader.load( "images/tiles.jpg" );
 	let material1	= new THREE.MeshLambertMaterial({
 		transparent : true,
 		map: texture,
@@ -128,6 +137,15 @@ function initialize()
 	mesh1.position.y = -1;
 	
 	markerRoot1.add( mesh1 );
+	
+	        //the object inside the hole
+        gltfLoader.load("models/stylized_airplane_-_the_flying_circus_diorama.glb", function (gltf) {
+          let object = gltf.scene;
+          object.position.set(0, -1.25, 0); // Ajustez selon vos besoins
+          object.rotation.set(0, 0, 0);
+          object.scale.set(0.08, 0.08, 0.08); // Ajustez selon vos besoins
+          markerRoot1.add(object); // Ajoutez l'objet au markerRoot1
+        })
 	
 	// the invisibility cloak (box with a hole)
 	let geometry0 = new THREE.BoxGeometry(2,2,2);

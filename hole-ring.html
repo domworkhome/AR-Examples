@@ -4,8 +4,13 @@
 	<title>Hello, world!</title>
 	<!-- include three.js library -->
 	<script src="js/three.js"></script>
-  <!-- include GLTFLoader.js library -->
-  <script src="js/GLTFLoader.js"></script>
+	    <!-- include GLTFLoader.js library -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r126/three.min.js"
+      integrity="sha512-n8IpKWzDnBOcBhRlHirMZOUvEq2bLRMuJGjuVqbzUJwtTsgwOgK5aS0c1JA647XWYfqvXve8k3PtZdzpipFjgg=="
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
 	<!-- include jsartookit -->
 	<script src="jsartoolkit5/artoolkit.min.js"></script>
 	<script src="jsartoolkit5/artoolkit.api.js"></script>
@@ -32,6 +37,8 @@ var arToolkitSource, arToolkitContext;
 var markerRoot1;
 
 var mesh1;
+
+var gltfLoader = new THREE.GLTFLoader();
   
 initialize();
 animate();
@@ -115,15 +122,14 @@ function initialize()
 		type : 'pattern',
 		patternUrl : "data/hiro.patt",
 	})
-  
-  //the object inside the hole
-  var gltfLoader = new THREE.GLTFLoader();
-    gltfLoader.load('models/neko.glb', function (gltf) {
-        let object = gltf.scene;
-        object.position.set(0, -1, 0); // Ajustez selon vos besoins
-        object.scale.set(0.1, 0.1, 0.1); // Ajustez selon vos besoins
-        markerRoot1.add(object); // Ajoutez l'objet au markerRoot1
-    });
+        //the object inside the hole
+        gltfLoader.load("models/forest_house.glb", function (gltf) {
+          let object = gltf.scene;
+          object.position.set(0, -1.25, 0); // Ajustez selon vos besoins
+          object.rotation.set(0, 0, 0);
+          object.scale.set(0.06, 0.06, 0.06); // Ajustez selon vos besoins
+          markerRoot1.add(object); // Ajoutez l'objet au markerRoot1
+        })
 
 	// the inside of the hole
 	let geometry1	= new THREE.CylinderGeometry(0.85,0.85, 3, 32,1);
